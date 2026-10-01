@@ -1,7 +1,7 @@
 import sqlite3
 
 def get_connection():
-    conn = sqlite3.connect("database/tasklist.sqlite")
+    conn = sqlite3.connect('database/tasklist.sqlite')
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
 
@@ -16,7 +16,7 @@ def get_classes():
             rows = cursor.fetchall()
     except sqlite3.OperationalError as e:
         print(f"Failed to get all classes: {e}")
-    return rows
+    return [row[0] for row in rows]
 
 def get_tasks_for_class(class_id):
     rows = None
@@ -38,9 +38,8 @@ def delete_task(class_id, task_id):
         with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute('''
-            DELETE FROM Class JOIN Task ON Class.class_id = Task.class_id
-            ''', (class_id, task_id))
+            DELETE FROM Task
+            WHERE Task.task_id = ?
+            ''', task_id)
     except sqlite3.OperationalError as e:
         print(f"Failed to remove task: {e}")
-
-print(get_classes())

@@ -5,7 +5,7 @@ from model import task_DAL as db
 app = Flask(__name__)
 
 
-@app.route('/', args=['GET'])
+@app.route('/', methods=['GET'])
 def index():
     class_key = request.args.get('class_key')
     classes = db.get_classes()
@@ -18,6 +18,7 @@ def index():
 
     return render_template('index.html',
                            classes=classes,
+                           class_key=class_key,
                            task_list=task_list)
 
 @app.route('/add_task', methods=['POST'])
