@@ -33,13 +33,42 @@ def get_tasks_for_class(class_id):
     return rows
 
 
-def delete_task(class_id, task_id):
+def delete_task(task_id):
     try:
         with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute('''
             DELETE FROM Task
-            WHERE Task.task_id = ?
-            ''', task_id)
+                WHERE task_id = ?
+                ''', [task_id])
     except sqlite3.OperationalError as e:
         print(f"Failed to remove task: {e}")
+
+
+def add_task(t_class, t_name, t_date):
+    try:
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+            INSERT INTO Task (class_id, task_name, due_date)
+            VALUES (?, ?, ?)
+            ''', (t_class, t_name, t_date))
+    except sqlite3.OperationalError as e:
+        print(f"Failed to add task: {e}")
+    return None
+
+
+def get_class_id(class_name):
+    try:
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+            SELECT class_id FROM Class
+            WHERE name = ?
+            ''', (class_name,))
+            row = cursor.fetchone()
+            if row:
+                return row[0]
+    except sqlite3.OperationalError as e:
+        print(f"Failed to get class id: {e}")
+    return None

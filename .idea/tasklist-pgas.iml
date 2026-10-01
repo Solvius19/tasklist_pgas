@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module type="PYTHON_MODULE" version="4">
+<module external.system.id="pyproject.toml" type="PYTHON_MODULE" version="4">
   <component name="Flask">
     <option name="enabled" value="true" />
   </component>
@@ -7,12 +7,9 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
     </content>
-    <orderEntry type="jdk" jdkName="~\PycharmProjects\tasklist_pgas\.venv" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="~/PycharmProjects/tasklist_pgas/.venv" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
-  <component name="PackageRequirementsSettings" />
-  <component name="PyDocumentationSettings" />
-  <component name="ReSTService" />
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />
     <option name="TEMPLATE_FOLDERS">
@@ -21,5 +18,4 @@
       </list>
     </option>
   </component>
-  <component name="TestRunnerService" />
 </module>
