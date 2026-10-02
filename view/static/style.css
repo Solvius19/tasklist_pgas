@@ -263,3 +263,15 @@ transform: scale(0.98);
 padding: 22px;
 }
 }
+
+/* Remove Class button */
+.remove-class-btn {
+    width: 160px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    flex-shrink: 0;
+}
+

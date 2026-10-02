@@ -18,6 +18,19 @@ def get_classes():
         print(f"Failed to get all classes: {e}")
     return [row[0] for row in rows]
 
+def get_classes_with_details():
+    rows = None
+    try:
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                           SELECT * FROM Class
+                           ''')
+            rows = cursor.fetchall()
+    except sqlite3.OperationalError as e:
+        print(f"Failed to get all classes: {e}")
+    return rows
+
 def get_tasks_for_class(class_id):
     rows = None
     try:
@@ -72,3 +85,27 @@ def get_class_id(class_name):
     except sqlite3.OperationalError as e:
         print(f"Failed to get class id: {e}")
     return None
+
+def add_class(class_name, period, teacher):
+    try:
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+            INSERT INTO Class (name, period, teacher)
+            VALUES (?, ?, ?)
+            ''', (class_name, period, teacher))
+            conn.commit()
+    except sqlite3.OperationalError as e:
+        print(f"Failed to add class: {e}")
+
+def remove_class(class_id):
+    try:
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+            DELETE FROM Class
+            WHERE class_id = ?
+                           ''', (class_id,))
+            conn.commit()
+    except sqlite3.OperationalError as e:
+        print(f"Failed to remove class: {e}")

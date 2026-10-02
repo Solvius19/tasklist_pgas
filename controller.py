@@ -36,13 +36,13 @@ def add_task():
     task_name = request.form.get('task_name')
     due_date = request.form.get('due_date')
 
-    if class_name is None or class_name == "" or task_name is None or task_name == "" or due_date is None or due_date == "":
+    if not class_name or not task_name or not due_date:
         return render_template('error.html', message="All fields are required to add a task.")
 
     if due_date is not None:
         try:
-            date1 = datetime.strptime("2024-03-15", "%Y-%m-%d")
-            date2 = datetime.strptime("2024-04-01", "%Y-%m-%d")
+            date1 = datetime.strptime(due_date, "%Y-%m-%d")
+            date2 = datetime.today()
             if date1 < date2:
                 return render_template('error.html', message="Due date cannot be in the past.")
 
@@ -67,6 +67,37 @@ def remove_task():
 
 def get_class_id(class_name):
     return db.get_class_id(class_name)
+
+@app.route('/modify_classes', methods=['POST'])
+def modify_classes():
+    classes = db.get_classes_with_details()
+    return render_template('class_list.html', classes=classes)
+
+@app.route('/remove_class', methods=['POST'])
+def remove_class():
+    class_id = request.form.get('class_id')
+    if class_id is None:
+        return render_template('error.html', message="Invalid class.")
+    db.remove_class(class_id)
+    return redirect(url_for('index'))
+
+@app.route('/add_class', methods=['POST'])
+def add_class():
+    class_name = request.form.get('class_name')
+    period = int(request.form.get('period'))
+    teacher = request.form.get('teacher')
+    if not class_name or not period or not teacher:
+        return render_template('error.html', message="All fields are required to add a class.")
+    elif not is_valid_period(period):
+        return render_template('error.html', message="Period already exists.")
+    db.add_class(class_name, period, teacher)
+    return redirect(url_for('index'))
+
+def is_valid_period(period):
+    classes = db.get_classes_with_details()
+    for class_id in classes:
+        if class_id[0] == period:
+            return False
 
 if __name__ == '__main__':
     app.run()
