@@ -98,6 +98,7 @@ def is_valid_period(period):
     for class_id in classes:
         if class_id[0] == period:
             return False
+    return True
 
 if __name__ == '__main__':
     app.run()
