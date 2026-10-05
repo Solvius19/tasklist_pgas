@@ -103,6 +103,11 @@ def remove_class(class_id):
         with get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute('''
+            DELETE FROM Task 
+            WHERE class_id = ?
+            ''', [class_id])
+            conn.commit()
+            cursor.execute('''
             DELETE FROM Class
             WHERE class_id = ?
                            ''', (class_id,))
